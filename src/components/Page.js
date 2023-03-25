@@ -11,12 +11,6 @@ const Page = () => {
         fetchData();
     }, [])
 
-    // useEffect(() => {
-    //     if (data) {
-    //     fetchData();
-    // }
-    // }, [data])
-
     const fetchData = () => {
         fetch('http://localhost:7070/notes')
             .then(response => response.json())
@@ -40,12 +34,10 @@ const Page = () => {
         if (input) {
             fetch('http://localhost:7070/notes', {
                 method: 'POST',
-                headers: {'content-type': 'application/json'},
+                headers: {'Content-type': 'application/json'},
                 body: JSON.stringify(newData)
-            }).then(response => response.json()).then(data => {
-                setData([...data, newData])
-            }) 
-    
+            })
+            .then(() => fetchData())
             setInput('');
         }
     }
@@ -53,7 +45,7 @@ const Page = () => {
     const handleRemove = (id) => {
         fetch(`http://localhost:7070/notes/${id}`, {
                 method: 'DELETE',
-            })
+            }).then(() => fetchData());
     }
 
     return(
